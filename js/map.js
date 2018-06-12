@@ -34,9 +34,9 @@ var OFFER_TYPE = {
 var TEMPLATE = document.querySelector('template');
 var PIN_TEMPLATE = TEMPLATE.content.querySelector('.map__pin');
 var CARD_TEMPLATE = TEMPLATE.content.querySelector('.map__card');
-var map = document.querySelector('.map');
-var mapPinsContainer = document.querySelector('.map__pins');
-var mapFiltersContainer = map.querySelector('.map__filters-container');
+var MAP = document.querySelector('.map');
+var MAP_PINS_CONTAINER = document.querySelector('.map__pins');
+var MAP_FILTERS_CONTAINER = MAP.querySelector('.map__filters-container');
 
 // === functions ===
 var getRandomNumber = function (min, max) {
@@ -55,7 +55,7 @@ var sortRandom = function (array) {
   return finalArray;
 };
 
-var addElementsUsingFragment = function (parent, dataArray, callback) {
+var addElementsWithFragment = function (parent, dataArray, callback) {
   var fragment = document.createDocumentFragment();
   dataArray.forEach(function (it) {
     fragment.appendChild(callback(it));
@@ -143,8 +143,8 @@ var renderCard = function (post) {
     return feature;
   };
 
-  // addElementsUsingFragment(parent, dataArray, callback)
-  addElementsUsingFragment(featuresViews, post.offer.features, createFeature);
+  // addElementsWithFragment(parent, dataArray, callback)
+  addElementsWithFragment(featuresViews, post.offer.features, createFeature);
 
   card.querySelector('.popup__description').textContent = post.offer.description;
 
@@ -162,17 +162,17 @@ var renderCard = function (post) {
 
 // === start ===
 // у блока .map убери класс .map--faded
-map.classList.remove('map--faded');
+MAP.classList.remove('map--faded');
 // сгенерируй рекламные посты, количество - AD_POSTS_AMOUNT
 var advertPosts = generateAdvertPosts(AD_POSTS_AMOUNT);
 var fragment = document.createDocumentFragment();
 
-// addElementsUsingFragment(parent, dataArray, callback)
-addElementsUsingFragment(mapPinsContainer, advertPosts, renderPin);
+// addElementsWithFragment(parent, dataArray, callback)
+addElementsWithFragment(MAP_PINS_CONTAINER, advertPosts, renderPin);
 
 
-mapPinsContainer.appendChild(fragment);
+MAP_PINS_CONTAINER.appendChild(fragment);
 
 
 var titleCard = renderCard(advertPosts[0]);
-map.insertBefore(titleCard, mapFiltersContainer);
+MAP.insertBefore(titleCard, MAP_FILTERS_CONTAINER);
