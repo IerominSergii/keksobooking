@@ -2,7 +2,6 @@
 
 // === game-data ===
 var AD_POSTS_AMOUNT = 8;
-var AVATARS_NUMBER = [1, 2, 3, 4, 5, 6, 7, 8];
 var TITLE = [
   'Большая уютная квартира',
   'Маленькая неуютная квартира',
@@ -44,15 +43,15 @@ var getRandomNumber = function (min, max) {
 };
 
 var sortRandom = function (array) {
-  var finalArray = [];
-  var temporaryArray = array.slice();
-  for (var j = 0; j < array.length; j++) {
-    var randomIndex = getRandomNumber(0, temporaryArray.length - 1);
-    var element = temporaryArray.splice(randomIndex, 1);
-    finalArray.push(element);
+  var newArray = array.slice();
+  for (var i = array.length; i > 0; i--) {
+    var l = Math.floor(Math.random() * (i + 1));
+    var temp = array[i];
+    array[i] = array[l];
+    array[l] = temp;
   }
 
-  return finalArray;
+  return newArray;
 };
 
 var addElementsWithFragment = function (parent, dataArray, callback) {
@@ -63,13 +62,12 @@ var addElementsWithFragment = function (parent, dataArray, callback) {
   parent.appendChild(fragment);
 };
 
-var generateRandomAdvertPost = function () {
+var generateRandomAdvertPost = function (avatarIndex) {
   var adPost = {};
   // author
   adPost.author = {};
   // author.avatar
-  var currentAvatarNumber = AVATARS_NUMBER.splice(getRandomNumber(0, AVATARS_NUMBER.length - 1), 1);
-  adPost.author.avatar = 'img/avatars/user0' + currentAvatarNumber[0] + '.png';
+  adPost.author.avatar = 'img/avatars/user0' + avatarIndex + '.png';
   // offer
   adPost.offer = {};
   // offer.title
@@ -100,7 +98,7 @@ var generateRandomAdvertPost = function () {
   // location.x
   adPost.location.x = getRandomNumber(300, 900) - 25;
   // location.y
-  adPost.location.y = getRandomNumber(130, 630) - 70;
+  adPost.location.y = getRandomNumber(130, 630) + 70;
 
   return adPost;
 };
@@ -108,7 +106,7 @@ var generateRandomAdvertPost = function () {
 var generateAdvertPosts = function (amount) {
   var adPostsList = [];
   for (var k = 1; k <= amount; k++) {
-    adPostsList.push(generateRandomAdvertPost());
+    adPostsList.push(generateRandomAdvertPost(k));
   }
 
   return adPostsList;
