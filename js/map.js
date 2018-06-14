@@ -96,9 +96,9 @@ var generateRandomAdvertPost = function (avatarIndex) {
   // location
   adPost.location = {};
   // location.x
-  adPost.location.x = getRandomNumber(300, 900) - 25;
+  adPost.location.x = getRandomNumber(300, 900);
   // location.y
-  adPost.location.y = getRandomNumber(130, 630) + 70;
+  adPost.location.y = getRandomNumber(130, 630);
 
   return adPost;
 };
@@ -114,8 +114,8 @@ var generateAdvertPosts = function (amount) {
 
 var renderPin = function (advert) {
   var pin = PIN_TEMPLATE.cloneNode(true);
-  pin.style.left = advert.location.x + 'px';
-  pin.style.top = advert.location.y + 'px';
+  pin.style.left = (advert.location.x - 25) + 'px';
+  pin.style.top = (advert.location.y - 70) + 'px';
   pin.querySelector('img').src = advert.author.avatar;
   pin.querySelector('img').alt = advert.offer.title;
 
