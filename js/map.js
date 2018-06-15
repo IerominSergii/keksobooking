@@ -33,16 +33,16 @@ var OFFER_TYPE = {
 var TEMPLATE = document.querySelector('template');
 var PIN_TEMPLATE = TEMPLATE.content.querySelector('.map__pin');
 var CARD_TEMPLATE = TEMPLATE.content.querySelector('.map__card');
-var MAP = document.querySelector('.map');
-var MAP_PINS_CONTAINER = document.querySelector('.map__pins');
-var MAP_FILTERS_CONTAINER = MAP.querySelector('.map__filters-container');
+var map = document.querySelector('.map');
+var mapPinsContainer = document.querySelector('.map__pins');
+var mapFiltersContainer = map.querySelector('.map__filters-container');
 
 // === functions ===
 var getRandomNumber = function (min, max) {
   return Math.round(Math.random() * (max - min) + min);
 };
 
-var sortRandom = function (array) {
+var shuffle = function (array) {
   var newArray = array.slice();
   for (var i = array.length; i > 0; i--) {
     var l = Math.floor(Math.random() * (i + 1));
@@ -56,8 +56,8 @@ var sortRandom = function (array) {
 
 var addElementsWithFragment = function (parent, dataArray, callback) {
   var fragment = document.createDocumentFragment();
-  dataArray.forEach(function (it) {
-    fragment.appendChild(callback(it));
+  dataArray.forEach(function (element) {
+    fragment.appendChild(callback(element));
   });
   parent.appendChild(fragment);
 };
@@ -92,7 +92,7 @@ var generateRandomAdvertPost = function (avatarIndex) {
   // offer.description
   adPost.offer.description = '';
   // offer.photos
-  adPost.offer.photos = sortRandom(PHOTOS);
+  adPost.offer.photos = shuffle(PHOTOS);
   // location
   adPost.location = {};
   // location.x
@@ -134,10 +134,10 @@ var renderCard = function (post) {
   var featuresViews = card.querySelector('.popup__features');
   featuresViews.innerHTML = '';
 
-  var createFeature = function (it) {
+  var createFeature = function (featureName) {
     var feature = document.createElement('li');
     feature.classList.add('popup__feature');
-    feature.classList.add('popup__feature--' + it);
+    feature.classList.add('popup__feature--' + featureName);
     return feature;
   };
 
@@ -149,7 +149,7 @@ var renderCard = function (post) {
   var photosContainer = card.querySelector('.popup__photos');
   var photoImageTemplate = photosContainer.removeChild(photosContainer.querySelector('img'));
 
-  post.offer.photos.forEach(function (it, index) {
+  post.offer.photos.forEach(function (element, index) {
     var nextPhoto = photoImageTemplate.cloneNode(true);
     nextPhoto.src = post.offer.photos[index];
     photosContainer.appendChild(nextPhoto);
@@ -160,17 +160,17 @@ var renderCard = function (post) {
 
 // === start ===
 // у блока .map убери класс .map--faded
-MAP.classList.remove('map--faded');
+map.classList.remove('map--faded');
 // сгенерируй рекламные посты, количество - AD_POSTS_AMOUNT
 var advertPosts = generateAdvertPosts(AD_POSTS_AMOUNT);
 var fragment = document.createDocumentFragment();
 
 // addElementsWithFragment(parent, dataArray, callback)
-addElementsWithFragment(MAP_PINS_CONTAINER, advertPosts, renderPin);
+addElementsWithFragment(mapPinsContainer, advertPosts, renderPin);
 
 
-MAP_PINS_CONTAINER.appendChild(fragment);
+mapPinsContainer.appendChild(fragment);
 
 
 var titleCard = renderCard(advertPosts[0]);
-MAP.insertBefore(titleCard, MAP_FILTERS_CONTAINER);
+map.insertBefore(titleCard, mapFiltersContainer);
