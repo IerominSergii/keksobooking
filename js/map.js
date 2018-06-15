@@ -44,15 +44,14 @@ var getRandomNumber = function (min, max) {
 
 var shuffle = function (array) {
   var newArray = array.slice();
+  var finalArray = [];
 
-  array.forEach(function (item, i) {
-    var l = Math.floor(Math.random() * (i + 1));
-    var temp = array[i];
-    array[i] = array[l];
-    array[l] = temp;
+  array.forEach(function () {
+    var randomIndex = getRandomNumber(0, newArray.length - 1);
+    finalArray.push(newArray.splice(randomIndex, 1)[0]);
   });
 
-  return newArray;
+  return finalArray;
 };
 
 var addElementsWithFragment = function (parent, dataArray, callback) {
@@ -65,50 +64,37 @@ var addElementsWithFragment = function (parent, dataArray, callback) {
 
 var generateRandomAdvertPost = function (avatarIndex) {
   var adPost = {};
-  // author
+
   adPost.author = {};
-  // author.avatar
-  adPost.author.avatar = 'img/avatars/user0' + avatarIndex + '.png';
-  // offer
+  adPost.author.avatar = 'img/avatars/user0' + (avatarIndex + 1) + '.png';
+
+  adPost.location = {};
+  adPost.location.x = getRandomNumber(300, 900);
+  adPost.location.y = getRandomNumber(130, 630);
+
   adPost.offer = {};
-  // offer.title
-  adPost.offer.title = TITLE.splice(getRandomNumber(0, TITLE.length - 1), 1);
-  // offer.address
-  adPost.offer.address = getRandomNumber(100, 999) + ', ' + getRandomNumber(100, 999);
-  // offer.price
+  adPost.offer.title = TITLE.splice(avatarIndex, 1);
+  adPost.offer.address = adPost.location.x + ', ' + adPost.location.y;
   adPost.offer.price = getRandomNumber(1000, 1000000);
-  // offer.type
   adPost.offer.type = TYPE[getRandomNumber(0, TYPE.length - 1)];
-  // offer.rooms
   adPost.offer.rooms = getRandomNumber(1, 5);
-  // offer.guests в задании указано случайное количество гостей, беру от 1 до 10
   adPost.offer.guests = getRandomNumber(1, 10);
-  // offer.checkin
   adPost.offer.checkin = CHECKIN[getRandomNumber(0, CHECKIN.length - 1)];
-  // offer.checkout
   adPost.offer.checkout = CHECKOUT[getRandomNumber(0, CHECKOUT.length - 1)];
-  // offer.features "features": массив строк случайной длины
   adPost.offer.features = FEATURES.slice();
   adPost.offer.features.length = getRandomNumber(1, 6);
-  // offer.description
   adPost.offer.description = '';
-  // offer.photos
   adPost.offer.photos = shuffle(PHOTOS);
-  // location
-  adPost.location = {};
-  // location.x
-  adPost.location.x = getRandomNumber(300, 900);
-  // location.y
-  adPost.location.y = getRandomNumber(130, 630);
 
   return adPost;
 };
 
 var generateAdvertPosts = function (amount) {
   var adPostsList = [];
-  for (var k = 1; k <= amount; k++) {
-    adPostsList.push(generateRandomAdvertPost(k));
-  }
+
+  do {
+    adPostsList.push(generateRandomAdvertPost(adPostsList.length));
+  } while (adPostsList.length < amount);
 
   return adPostsList;
 };
@@ -160,18 +146,14 @@ var renderCard = function (post) {
 };
 
 // === start ===
-// у блока .map убери класс .map--faded
 map.classList.remove('map--faded');
-// сгенерируй рекламные посты, количество - AD_POSTS_AMOUNT
 var advertPosts = generateAdvertPosts(AD_POSTS_AMOUNT);
 var fragment = document.createDocumentFragment();
 
 // addElementsWithFragment(parent, dataArray, callback)
 addElementsWithFragment(mapPinsContainer, advertPosts, renderPin);
 
-
 mapPinsContainer.appendChild(fragment);
-
 
 var titleCard = renderCard(advertPosts[0]);
 map.insertBefore(titleCard, mapFiltersContainer);
