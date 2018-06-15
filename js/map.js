@@ -44,12 +44,13 @@ var getRandomNumber = function (min, max) {
 
 var shuffle = function (array) {
   var newArray = array.slice();
-  for (var i = array.length; i > 0; i--) {
+
+  array.forEach(function (item, i) {
     var l = Math.floor(Math.random() * (i + 1));
     var temp = array[i];
     array[i] = array[l];
     array[l] = temp;
-  }
+  });
 
   return newArray;
 };
