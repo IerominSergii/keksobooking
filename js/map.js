@@ -122,6 +122,13 @@ var renderPin = function (advert) {
   return pin;
 };
 
+var createFeature = function (featureName) {
+  var feature = document.createElement('li');
+  feature.classList.add('popup__feature');
+  feature.classList.add('popup__feature--' + featureName);
+  return feature;
+};
+
 var renderCard = function (post) {
   var card = CARD_TEMPLATE.cloneNode(true);
   card.querySelector('.popup__avatar').src = post.author.avatar;
@@ -133,13 +140,6 @@ var renderCard = function (post) {
   card.querySelector('.popup__text--time').textContent = 'Заезд после ' + post.offer.checkin + ', выезд до ' + post.offer.checkout;
   var featuresViews = card.querySelector('.popup__features');
   featuresViews.innerHTML = '';
-
-  var createFeature = function (featureName) {
-    var feature = document.createElement('li');
-    feature.classList.add('popup__feature');
-    feature.classList.add('popup__feature--' + featureName);
-    return feature;
-  };
 
   // addElementsWithFragment(parent, dataArray, callback)
   addElementsWithFragment(featuresViews, post.offer.features, createFeature);
