@@ -36,6 +36,12 @@ var CARD_TEMPLATE = TEMPLATE.content.querySelector('.map__card');
 var map = document.querySelector('.map');
 var mapPinsContainer = document.querySelector('.map__pins');
 var mapFiltersContainer = map.querySelector('.map__filters-container');
+var noticeSection = document.querySelector('.notice');
+var title = noticeSection.querySelector('#title');
+var adForm = noticeSection.querySelector('.ad-form ');
+var formFieldsets = noticeSection.querySelectorAll('fieldset');
+var formInputs = noticeSection.querySelectorAll('input');
+
 
 // === functions ===
 var getRandomNumber = function (min, max) {
@@ -157,3 +163,40 @@ mapPinsContainer.appendChild(fragment);
 
 var titleCard = renderCard(advertPosts[0]);
 map.insertBefore(titleCard, mapFiltersContainer);
+
+
+// === form ===
+// === functions ===
+var removeAttributeElements = function (elements, attributeName) {
+  for (var i = 0; i < elements.length; i++) {
+    var current = elements[i];
+    if (current[attributeName]) {
+      current[attributeName] = false;
+    }
+  }
+};
+
+var addAttributeElements = function (elements, attributeName) {
+  for (var i = 0; i < elements.length; i++) {
+    var current = elements[i];
+    if (!current[attributeName]) {
+      current[attributeName] = true;
+    }
+  }
+};
+
+var makeFormActive = function () {
+  map.classList.remove('map--faded');
+  adForm.classList.remove('ad-form--disabled');
+  removeAttributeElements(formFieldsets, 'disabled');
+  removeAttributeElements(formInputs, 'disabled');
+};
+
+var makeFormDisabled = function () {
+  map.classList.add('map--faded');
+  adForm.classList.add('ad-form--disabled');
+  addAttributeElements(formFieldsets, 'disabled');
+};
+
+// makeFormDisabled();
+makeFormActive();
