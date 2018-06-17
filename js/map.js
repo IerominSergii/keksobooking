@@ -51,6 +51,9 @@ var formInputs = noticeSection.querySelectorAll('input');
 var typeForm = noticeSection.querySelector('#type').parentElement;
 var priceForm = noticeSection.querySelector('#price').parentElement;
 var priceFormInput = noticeSection.querySelector('#price');
+var addressFormInput = noticeSection.querySelector('#address');
+var timeOut = noticeSection.querySelector('#timeout');
+var timeIn = noticeSection.querySelector('#timein');
 
 
 // === functions ===
@@ -232,19 +235,27 @@ var setMinimalPrice = function (value) {
   }
 };
 
+var setTimeIn = function (selectedIndex) {
+  timeIn.selectedIndex = selectedIndex;
+};
+
+var setTimeOut = function (selectedIndex) {
+  timeOut.selectedIndex = selectedIndex;
+};
+
 // === start ===
 // makeFormDisabled();
 makeFormActive();
 
 typeForm.addEventListener('change', function (evt) {
-  evt.preventDefault();
-  var selectedElements = evt.target.querySelectorAll('option');
-
-  for (var i = 0; i < selectedElements.length; i++) {
-    if (selectedElements[i].selected) {
-      var selectedElement = selectedElements[i];
-    }
-  }
-
+  var selectedElement = evt.target.options[evt.target.selectedIndex];
   setMinimalPrice(selectedElement.textContent);
+});
+
+timeOut.addEventListener('change', function () {
+  setTimeIn(timeOut.selectedIndex);
+});
+
+timeIn.addEventListener('change', function () {
+  setTimeOut(timeIn.selectedIndex);
 });
