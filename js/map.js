@@ -29,6 +29,13 @@ var OFFER_TYPE = {
   palace: 'Дворец',
 };
 
+var PRICE_PLACEHOLDERS = {
+  'Бунгало': 0,
+  'Квартира': 1000,
+  'Дом': 5000,
+  'Дворец': 10000,
+};
+
 // === elements ===
 var TEMPLATE = document.querySelector('template');
 var PIN_TEMPLATE = TEMPLATE.content.querySelector('.map__pin');
@@ -41,6 +48,9 @@ var title = noticeSection.querySelector('#title');
 var adForm = noticeSection.querySelector('.ad-form ');
 var formFieldsets = noticeSection.querySelectorAll('fieldset');
 var formInputs = noticeSection.querySelectorAll('input');
+var typeForm = noticeSection.querySelector('#type').parentElement;
+var priceForm = noticeSection.querySelector('#price').parentElement;
+var priceFormInput = noticeSection.querySelector('#price');
 
 
 // === functions ===
@@ -198,5 +208,43 @@ var makeFormDisabled = function () {
   addAttributeElements(formFieldsets, 'disabled');
 };
 
+var changeMinPrice = function (element, minPrice) {
+  element.placeholder = PRICE_PLACEHOLDERS[minPrice];
+  element.min = PRICE_PLACEHOLDERS[minPrice];
+};
+
+var setMinimalPrice = function (value) {
+  switch (value) {
+    case 'Бунгало':
+      changeMinPrice(priceFormInput, value);
+      break;
+    case 'Квартира':
+      changeMinPrice(priceFormInput, value);
+      break;
+    case 'Дом':
+      changeMinPrice(priceFormInput, value);
+      break;
+    case 'Дворец':
+      changeMinPrice(priceFormInput, value);
+      break;
+    default:
+      throw new Error('Wrong accommodation type');
+  }
+};
+
+// === start ===
 // makeFormDisabled();
 makeFormActive();
+
+typeForm.addEventListener('change', function (evt) {
+  evt.preventDefault();
+  var selectedElements = evt.target.querySelectorAll('option');
+
+  for (var i = 0; i < selectedElements.length; i++) {
+    if (selectedElements[i].selected) {
+      var selectedElement = selectedElements[i];
+    }
+  }
+
+  setMinimalPrice(selectedElement.textContent);
+});
