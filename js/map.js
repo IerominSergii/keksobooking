@@ -36,11 +36,19 @@ var PRICE_PLACEHOLDERS = {
   'Дворец': 10000,
 };
 
+var MAIN_PIN_SIZES = {
+  width: 65,
+  height: 65,
+};
+
+var MAIN_PIN_POINTER_HEIGHT = 22;
+
 // === elements ===
 var TEMPLATE = document.querySelector('template');
 var PIN_TEMPLATE = TEMPLATE.content.querySelector('.map__pin');
 var CARD_TEMPLATE = TEMPLATE.content.querySelector('.map__card');
 var map = document.querySelector('.map');
+var mainPin = map.querySelector('.map__pin--main');
 var mapPinsContainer = document.querySelector('.map__pins');
 var mapFiltersContainer = map.querySelector('.map__filters-container');
 var noticeSection = document.querySelector('.notice');
@@ -51,7 +59,7 @@ var formInputs = noticeSection.querySelectorAll('input');
 var typeForm = noticeSection.querySelector('#type').parentElement;
 // var priceForm = noticeSection.querySelector('#price').parentElement;
 var priceFormInput = noticeSection.querySelector('#price');
-// var addressFormInput = noticeSection.querySelector('#address');
+var address = noticeSection.querySelector('#address');
 var timeOut = noticeSection.querySelector('#timeout');
 var timeIn = noticeSection.querySelector('#timein');
 var capacity = noticeSection.querySelector('#capacity');
@@ -166,22 +174,17 @@ var renderCard = function (post) {
   return card;
 };
 
-// === start ===
-map.classList.remove('map--faded');
-var advertPosts = generateAdvertPosts(AD_POSTS_AMOUNT);
-var fragment = document.createDocumentFragment();
-
-// addElementsWithFragment(parent, dataArray, callback)
-addElementsWithFragment(mapPinsContainer, advertPosts, renderPin);
-
-mapPinsContainer.appendChild(fragment);
-
-var titleCard = renderCard(advertPosts[0]);
-map.insertBefore(titleCard, mapFiltersContainer);
-
-
 // === form ===
 // === functions ===
+var activateMap = function () {
+  map.classList.remove('map--faded');
+};
+
+var deactivateMap = function () {
+  map.classList.add('map--faded');
+};
+
+
 var removeAttributeElements = function (elements, attributeName) {
   for (var i = 0; i < elements.length; i++) {
     var current = elements[i];
@@ -207,11 +210,21 @@ var makeFormActive = function () {
   removeAttributeElements(formInputs, 'disabled');
 };
 
-// var makeFormDisabled = function () {
-//   map.classList.add('map--faded');
-//   adForm.classList.add('ad-form--disabled');
-//   addAttributeElements(formFieldsets, 'disabled');
-// };
+var makeFormDisabled = function () {
+  map.classList.add('map--faded');
+  adForm.classList.add('ad-form--disabled');
+  addAttributeElements(formFieldsets, 'disabled');
+};
+
+var deactivatePage = function () {
+  deactivateMap();
+  makeFormDisabled();
+};
+
+var activatePage = function () {
+  activateMap();
+  makeFormActive();
+};
 
 var changeMinPrice = function (element, minPrice) {
   element.placeholder = PRICE_PLACEHOLDERS[minPrice];
@@ -239,6 +252,20 @@ var setMinimalPrice = function (value) {
 
 var setTime = function (selectedIndex, element) {
   element.selectedIndex = selectedIndex;
+};
+
+var setDefaultAdress = function () {
+  var top = +mainPin.style.top.slice(0, -2) + MAIN_PIN_SIZES.height / 2;
+  var left = +mainPin.style.left.slice(0, -2) + MAIN_PIN_SIZES.width / 2;
+
+  address.value = left + ', ' + top;
+};
+
+var setAdressByPin = function () {
+  var top = +mainPin.style.top.slice(0, -2) + MAIN_PIN_SIZES.height / 2 + MAIN_PIN_POINTER_HEIGHT;
+  var left = +mainPin.style.left.slice(0, -2) + MAIN_PIN_SIZES.width / 2;
+
+  address.value = left + ', ' + top;
 };
 
 var limitGuests = function (rooms) {
@@ -280,8 +307,26 @@ var limitGuests = function (rooms) {
 };
 
 // === start ===
-// makeFormDisabled();
-makeFormActive();
+// var advertPosts = generateAdvertPosts(AD_POSTS_AMOUNT);
+// var fragment = document.createDocumentFragment();
+//
+// // addElementsWithFragment(parent, dataArray, callback)
+// addElementsWithFragment(mapPinsContainer, advertPosts, renderPin);
+//
+// mapPinsContainer.appendChild(fragment);
+//
+// var titleCard = renderCard(advertPosts[0]);
+// map.insertBefore(titleCard, mapFiltersContainer);
+
+
+// === start ===
+setDefaultAdress();
+deactivatePage();
+
+mainPin.addEventListener('mouseup', function () {
+  activatePage();
+  setAdressByPin();
+});
 
 typeForm.addEventListener('change', function (evt) {
   var selectedElement = evt.target.options[evt.target.selectedIndex];
@@ -299,4 +344,3 @@ timeIn.addEventListener('change', function () {
 roomNumber.addEventListener('change', function () {
   limitGuests(roomNumber.options[roomNumber.selectedIndex].value);
 });
-// capacity.addEventListener('change', function () {});
