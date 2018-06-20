@@ -405,52 +405,63 @@ var showPopup = function () {
   successPopup.addEventListener('click', closePopup);
 };
 
+// handlers
+var mainPinMouseupHandler = function () {
+  activatePage();
+  setAdressByPin();
+  renderPins();
+};
+
+var typeAccomodationChangeHandler = function (evt) {
+  var selectedElement = evt.target.options[evt.target.selectedIndex];
+  setMinimalPrice(selectedElement.textContent);
+};
+
+var timeOutChangeHandler = function () {
+  setTime(timeOut.selectedIndex, timeIn);
+};
+
+var timeInChangeHandler = function () {
+  setTime(timeIn.selectedIndex, timeOut);
+};
+
+var roomNumberChangeHandler = function () {
+  limitGuests(roomNumber.options[roomNumber.selectedIndex].value);
+};
+
+var setCapacityCustomValidityHandler = function () {
+  if (capacity.options[capacity.selectedIndex].disabled) {
+    capacity.setCustomValidity('«Количество мест» должно соответствовать «Количеству комнат». Пожалуйста, выберете из доступных вариантов.');
+  } else {
+    capacity.setCustomValidity('');
+  }
+};
+
+var resetButtonClickHandler = function () {
+  setInitialStateForForm();
+  deactivatePage();
+};
+
+var formButtonSubmitHandler = function () {
+  deactivatePage();
+  showPopup();
+  setInitialStateForForm();
+};
+
 
 // === start ===
 setInitialStateForForm();
 deactivatePage();
 
-mainPin.addEventListener('mouseup', function () {
-  activatePage();
-  setAdressByPin();
-  renderPins();
-});
-
-typeAccomodation.addEventListener('change', function (evt) {
-  var selectedElement = evt.target.options[evt.target.selectedIndex];
-  setMinimalPrice(selectedElement.textContent);
-});
-
-timeOut.addEventListener('change', function () {
-  setTime(timeOut.selectedIndex, timeIn);
-});
-
-timeIn.addEventListener('change', function () {
-  setTime(timeIn.selectedIndex, timeOut);
-});
-
-roomNumber.addEventListener('change', function () {
-  limitGuests(roomNumber.options[roomNumber.selectedIndex].value);
-});
-
-roomNumber.addEventListener('change', function () {
-  if (capacity.options[capacity.selectedIndex].disabled) {
-    capacity.setCustomValidity('«Количество мест» должно соответствовать «Количеству комнат». Пожалуйста, выберете из доступных вариантов.');
-  }
-});
-
-capacity.addEventListener('change', function () {
-  capacity.setCustomValidity('');
-});
-
+mainPin.addEventListener('mouseup', mainPinMouseupHandler);
+typeAccomodation.addEventListener('change', typeAccomodationChangeHandler);
+timeOut.addEventListener('change', timeOutChangeHandler);
+timeIn.addEventListener('change', timeInChangeHandler);
+roomNumber.addEventListener('change', roomNumberChangeHandler);
+roomNumber.addEventListener('change', setCapacityCustomValidityHandler);
+capacity.addEventListener('change', setCapacityCustomValidityHandler);
 adForm.addEventListener('submit', function (evt) {
   evt.preventDefault();
-  deactivatePage();
-  showPopup();
-  setInitialStateForForm();
+  formButtonSubmitHandler();
 });
-
-adFormReset.addEventListener('click', function () {
-  setInitialStateForForm();
-  deactivatePage();
-});
+adFormReset.addEventListener('click', resetButtonClickHandler);
