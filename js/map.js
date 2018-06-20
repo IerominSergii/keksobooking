@@ -1,6 +1,9 @@
 'use strict';
 
 // === game-data ===
+var ESC_KEYCODE = 27;
+// var ENTER_KEYCODE = 13;
+
 var AD_POSTS_AMOUNT = 8;
 var TITLE = [
   'Большая уютная квартира',
@@ -395,14 +398,21 @@ var activatePage = function () {
 };
 
 // popup
+var popupEscPressHandler = function (evt) {
+  if (evt.keyCode === ESC_KEYCODE) {
+    closePopup();
+  }
+};
+
 var closePopup = function () {
   successPopup.classList.add('hidden');
-  successPopup.removeEventListener('click', closePopup);
+  document.removeEventListener('click', closePopup);
 };
 
 var showPopup = function () {
   successPopup.classList.remove('hidden');
   successPopup.addEventListener('click', closePopup);
+  document.addEventListener('keydown', popupEscPressHandler);
 };
 
 // handlers
