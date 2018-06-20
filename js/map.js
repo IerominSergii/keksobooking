@@ -2,7 +2,6 @@
 
 // === game-data ===
 var ESC_KEYCODE = 27;
-// var ENTER_KEYCODE = 13;
 
 var AD_POSTS_AMOUNT = 8;
 var TITLE = [
