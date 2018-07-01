@@ -38,7 +38,7 @@ var PRICE_PLACEHOLDERS = {
   'Дворец': 10000,
 };
 
-var MAIN_PIN_SIZES = {
+var MAIN_PIN = {
   width: 65,
   height: 65,
 };
@@ -55,6 +55,14 @@ var DEFAULT_FORM_STATE = {
   capacityIndex: 1,
   descriptionValue: null,
 };
+
+var DEFAULT_MAIN_PIN_POSITION = {
+  x: 570,
+  y: 375,
+};
+
+var MAIN_PIN_MIN_Y_POSITION = 130;
+var MAIN_PIN_MAX_Y_POSITION = 630;
 
 // === elements ===
 var TEMPLATE = document.querySelector('template');
@@ -82,6 +90,8 @@ var features = noticeSection.querySelector('.features');
 
 var successPopup = document.querySelector('.success');
 var adFormReset = noticeSection.querySelector('.ad-form__reset');
+
+var pageState = false;
 
 
 // === functions ===
@@ -338,18 +348,16 @@ var limitGuests = function (rooms) {
 };
 
 var setAdressByPin = function () {
-  var top = +mainPin.style.top.slice(0, -2) + MAIN_PIN_SIZES.height / 2 + MAIN_PIN_POINTER_HEIGHT;
-  var left = +mainPin.style.left.slice(0, -2) + MAIN_PIN_SIZES.width / 2;
+  var top = parseInt(mainPin.style.top, 10) + MAIN_PIN.height / 2 + MAIN_PIN_POINTER_HEIGHT;
+  var left = parseInt(mainPin.style.left, 10) + MAIN_PIN.width / 2;
 
   address.value = left + ', ' + top;
 };
 
 // set default form state
-var setDefaultAdress = function () {
-  var top = +mainPin.style.top.slice(0, -2) + MAIN_PIN_SIZES.height / 2;
-  var left = +mainPin.style.left.slice(0, -2) + MAIN_PIN_SIZES.width / 2;
-
-  address.value = left + ', ' + top;
+var setDefaultMainPinPosition = function () {
+  mainPin.style.left = DEFAULT_MAIN_PIN_POSITION.x + 'px';
+  mainPin.style.top = DEFAULT_MAIN_PIN_POSITION.y + 'px';
 };
 
 var setDefaultOption = function (element, index) {
@@ -367,7 +375,8 @@ var setDefaultCheckbox = function (element) {
 };
 
 var setInitialStateForForm = function () {
-  setDefaultAdress();
+  setDefaultMainPinPosition();
+  setAdressByPin();
 
   setDefaultInput(title, DEFAULT_FORM_STATE.titleValue);
   setDefaultInput(priceForm, DEFAULT_FORM_STATE.priceValue);
@@ -386,12 +395,14 @@ var setInitialStateForForm = function () {
 
 // page
 var deactivatePage = function () {
+  pageState = false;
   deactivateMap();
   limitGuests(roomNumber.options[roomNumber.selectedIndex].value);
   makeFormDisabled();
 };
 
 var activatePage = function () {
+  pageState = true;
   activateMap();
   makeFormActive();
 };
@@ -415,12 +426,6 @@ var showPopup = function () {
 };
 
 // handlers
-var mainPinMouseupHandler = function () {
-  activatePage();
-  setAdressByPin();
-  renderPins();
-};
-
 var typeAccomodationChangeHandler = function (evt) {
   var selectedElement = evt.target.options[evt.target.selectedIndex];
   setMinimalPrice(selectedElement.textContent);
@@ -457,12 +462,72 @@ var formButtonSubmitHandler = function () {
   setInitialStateForForm();
 };
 
+// drag and drop
+// mainPin
+var mainPinMousedownHandler = function (downEvt) {
+  var startCoords = {
+    x: downEvt.clientX,
+    y: downEvt.clientY,
+  };
+
+  var mainPinCoordsMouseMoveHandler = function (moveEvt) {
+    moveEvt.preventDefault();
+    var shift = {
+      x: startCoords.x - moveEvt.clientX,
+      y: startCoords.y - moveEvt.clientY,
+    };
+
+    startCoords = {
+      x: moveEvt.clientX,
+      y: moveEvt.clientY,
+    };
+
+    if (mainPin.offsetLeft < 0) {
+      mainPin.style.left = 0 + 'px';
+    } else if ((mainPin.offsetLeft + mainPin.offsetWidth) > map.offsetWidth) {
+      mainPin.style.left = (map.offsetWidth - mainPin.offsetWidth) + 'px';
+    } else {
+      mainPin.style.left = (mainPin.offsetLeft - shift.x) + 'px';
+    }
+
+    if (mainPin.offsetTop < MAIN_PIN_MIN_Y_POSITION) {
+      mainPin.style.top = MAIN_PIN_MIN_Y_POSITION + 'px';
+    } else if (mainPin.offsetTop > MAIN_PIN_MAX_Y_POSITION) {
+      mainPin.style.top = MAIN_PIN_MAX_Y_POSITION + 'px';
+    } else {
+      mainPin.style.top = (mainPin.offsetTop - shift.y) + 'px';
+    }
+  };
+
+  var mainPinCoordsMouseUpHandler = function (upEvt) {
+    if (pageState) {
+      upEvt.preventDefault();
+      setAdressByPin();
+
+      document.removeEventListener('mousemove', mainPinCoordsMouseMoveHandler);
+      document.removeEventListener('mouseup', mainPinCoordsMouseUpHandler);
+    } else {
+      activatePage();
+      setAdressByPin();
+      renderPins();
+
+      document.removeEventListener('mousemove', mainPinCoordsMouseMoveHandler);
+      document.removeEventListener('mouseup', mainPinCoordsMouseUpHandler);
+    }
+
+  };
+
+  document.addEventListener('mousemove', mainPinCoordsMouseMoveHandler);
+  document.addEventListener('mouseup', mainPinCoordsMouseUpHandler);
+};
+
+mainPin.addEventListener('mousedown', mainPinMousedownHandler);
+
 
 // === start ===
 setInitialStateForForm();
 deactivatePage();
 
-mainPin.addEventListener('mouseup', mainPinMouseupHandler);
 typeAccomodation.addEventListener('change', typeAccomodationChangeHandler);
 timeOut.addEventListener('change', timeOutChangeHandler);
 timeIn.addEventListener('change', timeInChangeHandler);
