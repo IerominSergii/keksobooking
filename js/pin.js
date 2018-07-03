@@ -2,7 +2,6 @@
 
 (function () {
   // import
-  var showCard = window.card.showCard;
   var generateAdvertPosts = window.data;
   var addElementsWithFragment = window.util.addElementsWithFragment;
 
@@ -15,7 +14,7 @@
   var mapPinsContainer = document.querySelector('.map__pins');
 
   // functions
-  var renderPin = function (advert) {
+  var renderPin = function (advert, callback) {
     var pin = PIN_TEMPLATE.cloneNode(true);
     pin.style.left = (advert.location.x - 25) + 'px';
     pin.style.top = (advert.location.y - 70) + 'px';
@@ -23,19 +22,19 @@
     pin.querySelector('img').alt = advert.offer.title;
 
     pin.addEventListener('click', function () {
-      showCard(advert);
+      callback(advert);
     });
 
     return pin;
   };
 
   window.pin = {
-    renderPins: function () {
+    renderPins: function (handler) {
       var advertPosts = generateAdvertPosts(AD_POSTS_AMOUNT);
       var fragment = document.createDocumentFragment();
 
-      // addElementsWithFragment(parent, dataArray, callback)
-      addElementsWithFragment(mapPinsContainer, advertPosts, renderPin);
+      // params (parent, dataArray, callback, handler)
+      addElementsWithFragment(mapPinsContainer, advertPosts, renderPin, handler);
 
       mapPinsContainer.appendChild(fragment);
     },

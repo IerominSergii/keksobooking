@@ -16,10 +16,10 @@
 
       return finalArray;
     },
-    addElementsWithFragment: function (parent, dataArray, callback) {
+    addElementsWithFragment: function (parent, dataArray, callback, handler) {
       var fragment = document.createDocumentFragment();
       dataArray.forEach(function (element) {
-        fragment.appendChild(callback(element));
+        fragment.appendChild(callback(element, handler));
       });
       parent.appendChild(fragment);
     },
