@@ -1,10 +1,6 @@
 'use strict';
 
 (function () {
-  // import
-  var getRandomNumber = window.util.getRandomNumber;
-  var shuffle = window.util.shuffle;
-
   // constants
   var TITLE = [
     'Большая уютная квартира',
@@ -25,6 +21,10 @@
     'http://o0.github.io/assets/images/tokyo/hotel2.jpg',
     'http://o0.github.io/assets/images/tokyo/hotel3.jpg'
   ];
+
+  // global
+  var getRandomNumber = window.util.getRandomNumber;
+  var shuffle = window.util.shuffle;
 
   // functions
   var generateRandomAdvertPost = function (avatarIndex) {

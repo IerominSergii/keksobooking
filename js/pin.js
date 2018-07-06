@@ -1,12 +1,12 @@
 'use strict';
 
 (function () {
-  // import
-  var generateAdvertPosts = window.data;
-  var addElementsWithFragment = window.util.addElementsWithFragment;
-
   // constants
   var AD_POSTS_AMOUNT = 8;
+
+  // global
+  var generateAdvertPosts = window.data;
+  var addElementsWithFragment = window.util.addElementsWithFragment;
 
   // elements
   var template = document.querySelector('template');

@@ -1,13 +1,13 @@
 'use strict';
 
 (function () {
-  // import
-  var renderPins = window.pin.renderPins;
-  var showCard = window.card.showCard;
-
   // constants
   var MAIN_PIN_MIN_Y_POSITION = 130;
   var MAIN_PIN_MAX_Y_POSITION = 630;
+
+  // global
+  var renderPins = window.pin.renderPins;
+  var showCard = window.card.showCard;
 
   // elements
   var map = document.querySelector('.map');

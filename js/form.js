@@ -1,11 +1,6 @@
 'use strict';
 
 (function () {
-  // import
-  var removePins = window.pin.removePins;
-  var removeAttributeElements = window.util.removeAttributeElements;
-  var addAttributeElements = window.util.addAttributeElements;
-
   // constants
   var ESC_KEYCODE = 27;
   var PRICE_PLACEHOLDERS = {
@@ -33,6 +28,11 @@
     capacityIndex: 1,
     descriptionValue: null,
   };
+
+  // global
+  var removePins = window.pin.removePins;
+  var removeAttributeElements = window.util.removeAttributeElements;
+  var addAttributeElements = window.util.addAttributeElements;
 
   // elements
   var map = document.querySelector('.map');

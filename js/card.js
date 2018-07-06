@@ -1,9 +1,6 @@
 'use strict';
 
 (function () {
-  // import
-  var addElementsWithFragment = window.util.addElementsWithFragment;
-
   // constants
   var OfferType = {
     FLAT: 'Квартира',
@@ -11,6 +8,9 @@
     HOUSE: 'Дом',
     PALACE: 'Дворец',
   };
+
+  // global
+  var addElementsWithFragment = window.util.addElementsWithFragment;
 
   // elements
   var template = document.querySelector('template');
@@ -32,7 +32,7 @@
     card.querySelector('.popup__title').textContent = post.offer.title;
     card.querySelector('.popup__text--address').textContent = post.offer.address;
     card.querySelector('.popup__text--price').textContent = post.offer.price + '₽/ночь';
-    card.querySelector('.popup__type').textContent = OfferType[post.offer.type].toLowerCase();
+    card.querySelector('.popup__type').textContent = OfferType[post.offer.type.toLowerCase()];
     card.querySelector('.popup__text--capacity').textContent = post.offer.rooms + ' комнаты для ' + post.offer.guests + ' гостей';
     card.querySelector('.popup__text--time').textContent = 'Заезд после ' + post.offer.checkin + ', выезд до ' + post.offer.checkout;
     var featuresViews = card.querySelector('.popup__features');
