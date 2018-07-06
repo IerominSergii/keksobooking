@@ -5,16 +5,16 @@
   var addElementsWithFragment = window.util.addElementsWithFragment;
 
   // constants
-  var OFFER_TYPE = {
-    flat: 'Квартира',
-    bungalo: 'Бунгало',
-    house: 'Дом',
-    palace: 'Дворец',
+  var OfferType = {
+    FLAT: 'Квартира',
+    BUNGALO: 'Бунгало',
+    HOUSE: 'Дом',
+    PALACE: 'Дворец',
   };
 
   // elements
-  var TEMPLATE = document.querySelector('template');
-  var CARD_TEMPLATE = TEMPLATE.content.querySelector('.map__card');
+  var template = document.querySelector('template');
+  var cardTemplate = template.content.querySelector('.map__card');
   var map = document.querySelector('.map');
   var mapFiltersContainer = map.querySelector('.map__filters-container');
 
@@ -27,12 +27,12 @@
   };
 
   var renderCard = function (post) {
-    var card = CARD_TEMPLATE.cloneNode(true);
+    var card = cardTemplate.cloneNode(true);
     card.querySelector('.popup__avatar').src = post.author.avatar;
     card.querySelector('.popup__title').textContent = post.offer.title;
     card.querySelector('.popup__text--address').textContent = post.offer.address;
     card.querySelector('.popup__text--price').textContent = post.offer.price + '₽/ночь';
-    card.querySelector('.popup__type').textContent = OFFER_TYPE[post.offer.type];
+    card.querySelector('.popup__type').textContent = OfferType[post.offer.type].toLowerCase();
     card.querySelector('.popup__text--capacity').textContent = post.offer.rooms + ' комнаты для ' + post.offer.guests + ' гостей';
     card.querySelector('.popup__text--time').textContent = 'Заезд после ' + post.offer.checkin + ', выезд до ' + post.offer.checkout;
     var featuresViews = card.querySelector('.popup__features');

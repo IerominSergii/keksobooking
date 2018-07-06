@@ -9,13 +9,13 @@
   var AD_POSTS_AMOUNT = 8;
 
   // elements
-  var TEMPLATE = document.querySelector('template');
-  var PIN_TEMPLATE = TEMPLATE.content.querySelector('.map__pin');
+  var template = document.querySelector('template');
+  var pinTemplate = template.content.querySelector('.map__pin');
   var mapPinsContainer = document.querySelector('.map__pins');
 
   // functions
   var renderPin = function (advert, callback) {
-    var pin = PIN_TEMPLATE.cloneNode(true);
+    var pin = pinTemplate.cloneNode(true);
     pin.style.left = (advert.location.x - 25) + 'px';
     pin.style.top = (advert.location.y - 70) + 'px';
     pin.querySelector('img').src = advert.author.avatar;
