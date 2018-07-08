@@ -7,7 +7,7 @@
 
   // global
   var renderPins = window.pin.renderPins;
-  var showCard = window.card.showCard;
+  var showCard = window.card.show;
 
   // elements
   var map = document.querySelector('.map');

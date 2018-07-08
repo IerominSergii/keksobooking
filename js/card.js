@@ -58,15 +58,15 @@
 
   // export
   window.card = {
-    closeCard: function () {
+    close: function () {
       if (map.querySelector('.map__card')) {
         map.removeChild(map.querySelector('.map__card'));
       }
     },
-    showCard: function (advert) {
-      window.card.closeCard();
+    show: function (advert) {
+      window.card.close();
       var titleCard = renderCard(advert);
-      titleCard.querySelector('.popup__close').addEventListener('click', window.card.closeCard);
+      titleCard.querySelector('.popup__close').addEventListener('click', window.card.close);
       map.insertBefore(titleCard, mapFiltersContainer);
     },
   };

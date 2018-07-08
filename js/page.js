@@ -8,7 +8,7 @@
   var addFormHandlers = window.form.addFormHandlers;
   var showPopup = window.form.showPopup;
   var setAdressByPin = window.form.setAdressByPin;
-  var closeCard = window.card.closeCard;
+  var closeCard = window.card.close;
   var mainPinMouseDown = window.mainPin.mainPinMouseDown;
 
   // elements
