@@ -10,12 +10,19 @@
   var setAdressByPin = window.form.setAdressByPin;
   var closeCard = window.card.close;
   var mainPinMouseDown = window.mainPin.mainPinMouseDown;
+  var saveForm = window.backend.saveForm;
+  var showError = window.message.error;
 
   // elements
   var noticeSection = document.querySelector('.notice');
+  var adForm = document.querySelector('.ad-form');
   var adFormReset = noticeSection.querySelector('.ad-form__reset');
   var map = document.querySelector('.map');
   var mainPin = map.querySelector('.map__pin--main');
+
+  var formTitle = adForm.querySelector('#title');
+  var formPrice = adForm.querySelector('#price');
+  var formCapacity = adForm.querySelector('#capacity');
 
   // functions
   var activateMap = function () {
@@ -45,9 +52,21 @@
   };
 
   var formButtonSubmitHandler = function () {
-    deactivatePage();
-    showPopup();
-    setInitialStateForForm();
+    if (
+      formTitle.validity.valid &&
+      formPrice.validity.valid &&
+      formCapacity.validity.valid
+    ) {
+      saveForm(
+          new FormData(adForm),
+          function () {
+            deactivatePage();
+            showPopup();
+            setInitialStateForForm();
+          },
+          showError
+      );
+    }
   };
 
   var resetButtonClickHandler = function () {

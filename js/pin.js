@@ -5,8 +5,9 @@
   var AD_POSTS_AMOUNT = 8;
 
   // global
-  var generateAdvertPosts = window.data;
   var addElementsWithFragment = window.util.addElementsWithFragment;
+  var loadData = window.backend.loadData;
+  var showError = window.message.error;
 
   // elements
   var template = document.querySelector('template');
@@ -16,8 +17,8 @@
   // functions
   var renderPin = function (advert, callback) {
     var pin = pinTemplate.cloneNode(true);
-    pin.style.left = (advert.location.x - 25) + 'px';
-    pin.style.top = (advert.location.y - 70) + 'px';
+    pin.style.left = advert.location.x - 25 + 'px';
+    pin.style.top = advert.location.y - 70 + 'px';
     pin.querySelector('img').src = advert.author.avatar;
     pin.querySelector('img').alt = advert.offer.title;
 
@@ -30,13 +31,17 @@
 
   window.pin = {
     renderPins: function (handler) {
-      var advertPosts = generateAdvertPosts(AD_POSTS_AMOUNT);
-      var fragment = document.createDocumentFragment();
+      var renderPhotos = function (advertPosts) {
+        // params (parent, dataArray, callback, handler)
+        addElementsWithFragment(
+            mapPinsContainer,
+            advertPosts.slice(0, AD_POSTS_AMOUNT),
+            renderPin,
+            handler
+        );
+      };
 
-      // params (parent, dataArray, callback, handler)
-      addElementsWithFragment(mapPinsContainer, advertPosts, renderPin, handler);
-
-      mapPinsContainer.appendChild(fragment);
+      loadData(renderPhotos, showError);
     },
     removePins: function () {
       var elements = mapPinsContainer.querySelectorAll('.map__pin');
@@ -46,6 +51,6 @@
           mapPinsContainer.removeChild(elements[i]);
         }
       }
-    },
+    }
   };
 })();

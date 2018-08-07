@@ -4,19 +4,19 @@
   // constants
   var ESC_KEYCODE = 27;
   var PRICE_PLACEHOLDERS = {
-    'Бунгало': 0,
-    'Квартира': 1000,
-    'Дом': 5000,
-    'Дворец': 10000,
+    Бунгало: 0,
+    Квартира: 1000,
+    Дом: 5000,
+    Дворец: 10000
   };
   var MAIN_PIN = {
     width: 65,
-    height: 65,
+    height: 65
   };
   var MAIN_PIN_POINTER_HEIGHT = 22;
   var DEFAULT_MAIN_PIN_POSITION = {
     x: 570,
-    y: 375,
+    y: 375
   };
   var DEFAULT_FORM_STATE = {
     titleValue: '',
@@ -26,7 +26,7 @@
     timeOutIndex: 0,
     roomNumberIndex: 1,
     capacityIndex: 1,
-    descriptionValue: null,
+    descriptionValue: null
   };
 
   // global
@@ -176,7 +176,9 @@
 
   var setCapacityCustomValidityHandler = function () {
     if (capacity.options[capacity.selectedIndex].disabled) {
-      capacity.setCustomValidity('«Количество мест» должно соответствовать «Количеству комнат». Пожалуйста, выберете из доступных вариантов.');
+      capacity.setCustomValidity(
+          '«Количество мест» должно соответствовать «Количеству комнат». Пожалуйста, выберете из доступных вариантов.'
+      );
     } else {
       capacity.setCustomValidity('');
     }
@@ -185,7 +187,10 @@
   // export
   window.form = {
     setAdressByPin: function () {
-      var top = parseInt(mainPin.style.top, 10) + MAIN_PIN.height / 2 + MAIN_PIN_POINTER_HEIGHT;
+      var top =
+        parseInt(mainPin.style.top, 10) +
+        MAIN_PIN.height / 2 +
+        MAIN_PIN_POINTER_HEIGHT;
       var left = parseInt(mainPin.style.left, 10) + MAIN_PIN.width / 2;
 
       address.value = left + ', ' + top;
@@ -221,7 +226,10 @@
       addAttributeElements(formFieldsets, 'disabled');
     },
     addFormHandlers: function (handler) {
-      typeAccomodation.addEventListener('change', typeAccomodationChangeHandler);
+      typeAccomodation.addEventListener(
+          'change',
+          typeAccomodationChangeHandler
+      );
       timeOut.addEventListener('change', timeOutChangeHandler);
       timeIn.addEventListener('change', timeInChangeHandler);
       roomNumber.addEventListener('change', roomNumberChangeHandler);
@@ -236,6 +244,6 @@
       successPopup.classList.remove('hidden');
       successPopup.addEventListener('click', closePopup);
       document.addEventListener('keydown', popupEscPressHandler);
-    },
+    }
   };
 })();

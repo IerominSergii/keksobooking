@@ -16,9 +16,9 @@
 
       return finalArray;
     },
-    addElementsWithFragment: function (parent, dataArray, callback, handler) {
+    addElementsWithFragment: function (parent, elements, callback, handler) {
       var fragment = document.createDocumentFragment();
-      dataArray.forEach(function (element) {
+      elements.forEach(function (element) {
         fragment.appendChild(callback(element, handler));
       });
       parent.appendChild(fragment);
@@ -38,6 +38,6 @@
           current[attributeName] = true;
         }
       }
-    },
+    }
   };
 })();

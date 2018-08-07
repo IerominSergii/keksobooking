@@ -19,27 +19,27 @@
     mainPinMouseDown: function (downEvt, setAdress, turnOnPage) {
       var startCoords = {
         x: downEvt.clientX,
-        y: downEvt.clientY,
+        y: downEvt.clientY
       };
 
       var mainPinCoordsMouseMoveHandler = function (moveEvt) {
         moveEvt.preventDefault();
         var shift = {
           x: startCoords.x - moveEvt.clientX,
-          y: startCoords.y - moveEvt.clientY,
+          y: startCoords.y - moveEvt.clientY
         };
 
         startCoords = {
           x: moveEvt.clientX,
-          y: moveEvt.clientY,
+          y: moveEvt.clientY
         };
 
         if (mainPin.offsetLeft < 0) {
           mainPin.style.left = 0 + 'px';
-        } else if ((mainPin.offsetLeft + mainPin.offsetWidth) > map.offsetWidth) {
-          mainPin.style.left = (map.offsetWidth - mainPin.offsetWidth) + 'px';
+        } else if (mainPin.offsetLeft + mainPin.offsetWidth > map.offsetWidth) {
+          mainPin.style.left = map.offsetWidth - mainPin.offsetWidth + 'px';
         } else {
-          mainPin.style.left = (mainPin.offsetLeft - shift.x) + 'px';
+          mainPin.style.left = mainPin.offsetLeft - shift.x + 'px';
         }
 
         if (mainPin.offsetTop < MAIN_PIN_MIN_Y_POSITION) {
@@ -47,7 +47,7 @@
         } else if (mainPin.offsetTop > MAIN_PIN_MAX_Y_POSITION) {
           mainPin.style.top = MAIN_PIN_MAX_Y_POSITION + 'px';
         } else {
-          mainPin.style.top = (mainPin.offsetTop - shift.y) + 'px';
+          mainPin.style.top = mainPin.offsetTop - shift.y + 'px';
         }
       };
 
@@ -56,20 +56,26 @@
           upEvt.preventDefault();
           setAdress();
 
-          document.removeEventListener('mousemove', mainPinCoordsMouseMoveHandler);
+          document.removeEventListener(
+              'mousemove',
+              mainPinCoordsMouseMoveHandler
+          );
           document.removeEventListener('mouseup', mainPinCoordsMouseUpHandler);
         } else {
           upEvt.preventDefault();
           turnOnPage();
           renderPins(showCard);
 
-          document.removeEventListener('mousemove', mainPinCoordsMouseMoveHandler);
+          document.removeEventListener(
+              'mousemove',
+              mainPinCoordsMouseMoveHandler
+          );
           document.removeEventListener('mouseup', mainPinCoordsMouseUpHandler);
         }
       };
 
       document.addEventListener('mousemove', mainPinCoordsMouseMoveHandler);
       document.addEventListener('mouseup', mainPinCoordsMouseUpHandler);
-    },
+    }
   };
 })();
