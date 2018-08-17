@@ -38,6 +38,12 @@
           current[attributeName] = true;
         }
       }
+    },
+    disable: function (element) {
+      element.disabled = true;
+    },
+    enable: function (element) {
+      element.disabled = false;
     }
   };
 })();

@@ -33,6 +33,8 @@
   var removePins = window.pin.removePins;
   var removeAttributeElements = window.util.removeAttributeElements;
   var addAttributeElements = window.util.addAttributeElements;
+  var disable = window.util.disable;
+  var enable = window.util.enable;
 
   // elements
   var map = document.querySelector('.map');
@@ -58,28 +60,9 @@
   window.form.pageState = false;
 
   // functions
-  var changeMinPrice = function (element, minPrice) {
+  var setMinimalPrice = function (element, minPrice) {
     element.placeholder = PRICE_PLACEHOLDERS[minPrice];
     element.min = PRICE_PLACEHOLDERS[minPrice];
-  };
-
-  var setMinimalPrice = function (value) {
-    switch (value) {
-      case 'Бунгало':
-        changeMinPrice(priceForm, value);
-        break;
-      case 'Квартира':
-        changeMinPrice(priceForm, value);
-        break;
-      case 'Дом':
-        changeMinPrice(priceForm, value);
-        break;
-      case 'Дворец':
-        changeMinPrice(priceForm, value);
-        break;
-      default:
-        throw new Error('Wrong accommodation type');
-    }
   };
 
   var setTime = function (selectedIndex, element) {
@@ -89,37 +72,39 @@
   var limitGuests = function (rooms) {
     capacity.querySelectorAll('option');
     for (var i = 0; i < capacity.length; i++) {
+      var element = capacity[i];
+      var value = element.value;
+      var shouldBeDisabled = false;
+
       switch (rooms) {
         case '1':
-          if (capacity[i].value !== '1') {
-            capacity[i].disabled = true;
-          } else {
-            capacity[i].disabled = false;
+          if (value !== '1') {
+            shouldBeDisabled = true;
           }
           break;
         case '2':
-          if (capacity[i].value === '3' || capacity[i].value === '0') {
-            capacity[i].disabled = true;
-          } else {
-            capacity[i].disabled = false;
+          if (value === '3' || value === '0') {
+            shouldBeDisabled = true;
           }
           break;
         case '3':
-          if (capacity[i].value === '0') {
-            capacity[i].disabled = true;
-          } else {
-            capacity[i].disabled = false;
+          if (value === '0') {
+            shouldBeDisabled = true;
           }
           break;
         case '100':
-          if (capacity[i].value !== '0') {
-            capacity[i].disabled = true;
-          } else {
-            capacity[i].disabled = false;
+          if (value !== '0') {
+            shouldBeDisabled = true;
           }
           break;
         default:
           throw new Error('Wrong rooms amount');
+      }
+
+      if (shouldBeDisabled) {
+        disable(element);
+      } else {
+        enable(element);
       }
     }
   };
@@ -159,7 +144,7 @@
   // handlers
   var typeAccomodationChangeHandler = function (evt) {
     var selectedElement = evt.target.options[evt.target.selectedIndex];
-    setMinimalPrice(selectedElement.textContent);
+    setMinimalPrice(priceForm, selectedElement.textContent);
   };
 
   var timeOutChangeHandler = function () {
