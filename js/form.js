@@ -69,6 +69,7 @@
     element.selectedIndex = selectedIndex;
   };
 
+  // last version
   var limitGuests = function (rooms) {
     capacity.querySelectorAll('option');
     for (var i = 0; i < capacity.length; i++) {
