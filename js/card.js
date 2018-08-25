@@ -9,7 +9,6 @@
     PALACE: 'Дворец'
   };
 
-  // global
   var addElementsWithFragment = window.util.addElementsWithFragment;
 
   // elements

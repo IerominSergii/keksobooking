@@ -29,12 +29,11 @@
     descriptionValue: null
   };
 
-  // global
+  var CAPACITY_SHOULD_BE_DISABLED = [[1, 2, 3], [0, 2, 3], [0, 3], [0]];
+
   var removePins = window.pin.removePins;
   var removeAttributeElements = window.util.removeAttributeElements;
   var addAttributeElements = window.util.addAttributeElements;
-  var disable = window.util.disable;
-  var enable = window.util.enable;
 
   // elements
   var map = document.querySelector('.map');
@@ -71,42 +70,14 @@
 
   // last version
   var limitGuests = function (rooms) {
-    capacity.querySelectorAll('option');
-    for (var i = 0; i < capacity.length; i++) {
-      var element = capacity[i];
-      var value = element.value;
-      var shouldBeDisabled = false;
+    var options = capacity.querySelectorAll('option');
+    rooms = +rooms === 100 ? 0 : rooms;
+    var optionsShouldBeDisabled = CAPACITY_SHOULD_BE_DISABLED[rooms];
 
-      switch (rooms) {
-        case '1':
-          if (value !== '1') {
-            shouldBeDisabled = true;
-          }
-          break;
-        case '2':
-          if (value === '3' || value === '0') {
-            shouldBeDisabled = true;
-          }
-          break;
-        case '3':
-          if (value === '0') {
-            shouldBeDisabled = true;
-          }
-          break;
-        case '100':
-          if (value !== '0') {
-            shouldBeDisabled = true;
-          }
-          break;
-        default:
-          throw new Error('Wrong rooms amount');
-      }
-
-      if (shouldBeDisabled) {
-        disable(element);
-      } else {
-        enable(element);
-      }
+    for (var i = 0; i < options.length; i++) {
+      options[i].disabled = optionsShouldBeDisabled.some(function (elem) {
+        return elem === +options[i].value;
+      });
     }
   };
 

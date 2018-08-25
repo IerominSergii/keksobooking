@@ -1,7 +1,6 @@
 'use strict';
 
 (function () {
-  // global
   var setInitialStateForForm = window.form.setInitialStateForForm;
   var makeFormActive = window.form.makeFormActive;
   var makeFormDisabled = window.form.makeFormDisabled;
