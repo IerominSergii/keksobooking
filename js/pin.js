@@ -2,11 +2,9 @@
 
 (function () {
   // constants
-  var AD_POSTS_AMOUNT = 8;
+  var AD_POSTS_AMOUNT = 5;
 
   var addElementsWithFragment = window.util.addElementsWithFragment;
-  var loadData = window.backend.loadData;
-  var showError = window.message.error;
 
   // elements
   var template = document.querySelector('template');
@@ -29,18 +27,15 @@
   };
 
   window.pin = {
-    renderPins: function (handler) {
-      var renderPhotos = function (advertPosts) {
-        // params (parent, dataArray, callback, handler)
-        addElementsWithFragment(
-            mapPinsContainer,
-            advertPosts.slice(0, AD_POSTS_AMOUNT),
-            renderPin,
-            handler
-        );
-      };
-
-      loadData(renderPhotos, showError);
+    renderPins: function (adverts) {
+      var handler = window.card.show;
+      // params (parent, dataArray, callback, handler)
+      addElementsWithFragment(
+          mapPinsContainer,
+          adverts.slice(0, AD_POSTS_AMOUNT),
+          renderPin,
+          handler
+      );
     },
     removePins: function () {
       var elements = mapPinsContainer.querySelectorAll('.map__pin');

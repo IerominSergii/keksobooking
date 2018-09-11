@@ -73,10 +73,17 @@
     deactivatePage();
   };
 
+  var getOriginalAdverts = function (adverts) {
+    window.originalAdverts = adverts;
+  };
+
   // start
+  window.originalAdverts = [];
   setInitialStateForForm();
   deactivatePage();
   addFormHandlers(formButtonSubmitHandler);
   adFormReset.addEventListener('click', resetButtonClickHandler);
   mainPin.addEventListener('mousedown', mainPinMouseDownHandler);
+
+  window.backend.loadData(getOriginalAdverts, showError);
 })();

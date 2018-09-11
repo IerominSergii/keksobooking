@@ -54,7 +54,6 @@
   var features = noticeSection.querySelector('.features');
   var successPopup = document.querySelector('.success');
 
-  // export window.form
   window.form = {};
   window.form.pageState = false;
 

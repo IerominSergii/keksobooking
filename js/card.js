@@ -62,7 +62,6 @@
     return card;
   };
 
-  // export
   window.card = {
     close: function () {
       if (map.querySelector('.map__card')) {

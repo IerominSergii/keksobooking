@@ -5,14 +5,10 @@
   var MAIN_PIN_MIN_Y_POSITION = 130;
   var MAIN_PIN_MAX_Y_POSITION = 630;
 
-  var renderPins = window.pin.renderPins;
-  var showCard = window.card.show;
-
   // elements
   var map = document.querySelector('.map');
   var mainPin = map.querySelector('.map__pin--main');
 
-  // export
   // drag and drop
   window.mainPin = {
     mainPinMouseDown: function (downEvt, setAdress, turnOnPage) {
@@ -63,7 +59,7 @@
         } else {
           upEvt.preventDefault();
           turnOnPage();
-          renderPins(showCard);
+          window.pin.renderPins(window.originalAdverts);
 
           document.removeEventListener(
               'mousemove',
